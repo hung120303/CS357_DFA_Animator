@@ -3,12 +3,28 @@
  */
 package org.example;
 
+import javax.swing.*;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+
+        //Make the window
+        JFrame lol = new JFrame("top text");
+        lol.setVisible(true);
+        lol.setSize(1000,1000);
+
+        //Get some user input. Number of states, Alphabet, Transitions, starting state, accepting states
+        int numStates = Integer.valueOf(JOptionPane.showInputDialog("Enter number of states (1-10): "));
+        String sigma = JOptionPane.showInputDialog("Enter your alphabet (Ex: a, b, c, ..., d): ");
+        String delta = JOptionPane.showInputDialog("Enter transitions (Ex: {(a, 1, 2), ... , (b, 2, 3)}): ");
+        int startState = Integer.valueOf(JOptionPane.showInputDialog("Enter the start state (0-" + (numStates - 1) + "): "));
+        String accState = JOptionPane.showInputDialog("Enter the accepting state(s) (Ex: 0, ... , " + (numStates - 1) +"): ");
+
+
+        System.out.println(numStates);
     }
 }
