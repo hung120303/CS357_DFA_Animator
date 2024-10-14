@@ -7,6 +7,6 @@ public class Transition {
     public Transition(char i, int f, int t){
         input = i;
         from = f;
-        to = i;
+        to = t;
     }
 }
