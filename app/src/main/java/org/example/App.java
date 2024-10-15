@@ -26,7 +26,7 @@ public class App {
         int startState = Integer.valueOf(JOptionPane.showInputDialog("Enter the start state (0-" + (states - 1) + "): "));
         String accState = JOptionPane.showInputDialog("Enter the accepting state(s) (Ex: 0, ... , " + (states - 1) +"): ");
 
-        
+
     }
 
     public static Set<Character> getAlphabet(String s){
@@ -51,5 +51,58 @@ public class App {
             }
         }
         return qAcc;
+    }
+    public static Set<Transition> getTransitions(String s, int numStates, Set<Character> sigma){
+        Set<Transition> delta = new HashSet<Transition>(); 
+            if(s.charAt(0) != 123){ //input should start with '{'
+                return null; //This should be an error message for invalid format
+            }
+            int i = 1;
+            while(i < s.length() || s.charAt(i) != 125){ //until reach end of string or hit '}'
+                if((int)(s.charAt(i)) == 40){ // check for '('
+                    char input = '~'; 
+                    int from = -1;
+                    int to = -1;
+                    i++;
+                    while((int)(s.charAt(i)) != 41){ //check for ')'
+                        if(input == '~'){
+                            if( ((int)(s.charAt(i)) > 47 && (int)(s.charAt(i)) < 58) || ((int)(s.charAt(i)) > 64 && (int)(s.charAt(i)) < 91) || ((int)(s.charAt(i)) > 96 && (int)(s.charAt(i)) < 123) ){
+                                input = s.charAt(i);
+                            }
+                        }
+                        else if(from == -1){
+                            if( ((int)(s.charAt(i)) > 47 && (int)(s.charAt(i)) < 58) ){
+                                from = s.charAt(i) - '0';
+                            }                            
+                        }
+                        else if(to == -1){
+                            if( ((int)(s.charAt(i)) > 47 && (int)(s.charAt(i)) < 58) ){
+                                to = s.charAt(i) - '0';
+                            }                            
+                        }
+                        i++;
+                    }
+                    if(input != '~' && from != -1 && to != -1){
+                    delta.add(new Transition(input, from, to));
+                    }
+                }
+                i++;
+            }
+        if(isValidTransitions(delta, numStates, sigma)){
+            return delta;
+        }
+        else{
+            return null; 
+        }
+    }
+
+    public static boolean isValidTransitions(Set<Transition> t, int numStates, Set<Character> sigma){
+        // there should be one of each alphabet transitions for each state
+        
+        
+
+        // there should be (# of states) * (# of characters in alphabet) transitions
+        
+        return false;
     }
 }
