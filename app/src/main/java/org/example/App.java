@@ -27,6 +27,9 @@ public class App {
         String accState = JOptionPane.showInputDialog("Enter the accepting state(s) (Ex: 0, ... , " + (states - 1) +"): ");
 
 
+        Set<Character> sig = getAlphabet(sigma);
+        Set<Transition> t = getTransitions(delta, states, sig);
+
     }
 
     public static Set<Character> getAlphabet(String s){
@@ -58,7 +61,7 @@ public class App {
                 return null; //This should be an error message for invalid format
             }
             int i = 1;
-            while(i < s.length() || s.charAt(i) != 125){ //until reach end of string or hit '}'
+            while(i < s.length()){ //until reach end of string 
                 if((int)(s.charAt(i)) == 40){ // check for '('
                     char input = '~'; 
                     int from = -1;
@@ -83,7 +86,10 @@ public class App {
                         i++;
                     }
                     if(input != '~' && from != -1 && to != -1){
-                    delta.add(new Transition(input, from, to));
+                        delta.add(new Transition(input, from, to));
+                    }
+                    else{
+                        return null;
                     }
                 }
                 i++;
@@ -92,17 +98,37 @@ public class App {
             return delta;
         }
         else{
+            System.out.println("This transiton table is smelly");
             return null; 
         }
     }
 
-    public static boolean isValidTransitions(Set<Transition> t, int numStates, Set<Character> sigma){
+    public static boolean isValidTransitions(Set<Transition> tTable, int numStates, Set<Character> sigma){
         // there should be one of each alphabet transitions for each state
-        
-        
+        for(char c : sigma){
+            int[] check = new int[numStates];
+            for(Transition t: tTable){
 
-        // there should be (# of states) * (# of characters in alphabet) transitions
+                char curChar = t.getInput(); //We only care about the transtion symbol and the state it's coming from
+                int curFrom = t.getFrom();
+
+                if(curChar == c){
+                    check[curFrom] += 1; 
+                }
+
+            }
+            for(int i: check){
+                if(i != 1){
+                    return false; //There is not a single transition for one symbol for one state (0 or more than 1)
+                }
+            }
+        }
         
-        return false;
+        // there should be (# of states) * (# of characters in alphabet) transitions
+        if(tTable.size() != (numStates * sigma.size())){
+            return false;
+        }
+
+        return true;
     }
 }

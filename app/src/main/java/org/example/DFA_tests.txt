@@ -1,0 +1,20 @@
+Format:
+Number of States
+Alphabet
+Transition Table
+Start State
+Accept States
+
+Test 1 (valid):
+2
+a, b
+{(a, 0, 1), (b, 0, 1), (a, 1, 0), (b, 1, 0)}
+0
+1
+
+Test 2 (invalid):
+2
+a, b
+{(a, 0, 1), (b, 0, 1), (a, 1, 0), (b, 1, 0), (b, 1, 1)}
+0
+1

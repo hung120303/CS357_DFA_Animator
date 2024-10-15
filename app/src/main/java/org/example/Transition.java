@@ -9,4 +9,15 @@ public class Transition {
         from = f;
         to = t;
     }
+
+    public char getInput(){
+        return input; 
+    }
+    public int getFrom(){
+        return from; 
+    }
+    public int getTo(){
+        return to; 
+    }
+
 }
