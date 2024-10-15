@@ -4,6 +4,8 @@
 package org.example;
 
 import javax.swing.*;
+import java.util.Set;
+import java.util.HashSet;
 
 public class App {
     public String getGreeting() {
@@ -18,14 +20,36 @@ public class App {
         lol.setSize(1000,1000);
 
         //Get some user input. Number of states, Alphabet, Transitions, starting state, accepting states
-        int states = Integer.valueOf(JOptionPane.showInputDialog("Enter number of states (1-10): "));
-        String sigma = JOptionPane.showInputDialog("Enter your alphabet (Ex: a, b, c, ..., d): ");
+        int states = Integer.valueOf(JOptionPane.showInputDialog("Enter number of states (Min: 1; Max: 10): "));
+        String sigma = JOptionPane.showInputDialog("Enter your alphabet (Use numbers (0-9), uppercase/lowercase letters (A-Z, a-z))(Ex: a, b, 1, ..., 0): ");
         String delta = JOptionPane.showInputDialog("Enter transitions (Ex: {(a, 1, 2), ... , (b, 2, 3)} ): ");
         int startState = Integer.valueOf(JOptionPane.showInputDialog("Enter the start state (0-" + (states - 1) + "): "));
         String accState = JOptionPane.showInputDialog("Enter the accepting state(s) (Ex: 0, ... , " + (states - 1) +"): ");
 
         
+    }
 
-        System.out.println(states);
+    public static Set<Character> getAlphabet(String s){
+        Set<Character> sigma = new HashSet<Character>(); 
+        for(int i = 0; i < s.length(); i++){ //enumerate through each char element of the intput string
+            char cur = s.charAt(i);
+            if( ((int)cur > 47 && (int)cur < 58) || ((int)cur > 64 && (int)cur < 91) || ((int)cur > 96 && (int)cur < 123)){ // If ascii value is 0-9, A-Za-z
+                    sigma.add(cur); //add char to sigma                
+            }
+        }
+        return sigma;
+    }
+    public static Set<Integer> getAccStates(String s, int numStates){
+        Set<Integer> qAcc = new HashSet<Integer>(); 
+        for(int i = 0; i < s.length(); i++){ //enumerate through each char element of the intput string
+            char cur = s.charAt(i);
+            if( ((int)cur > 47 && (int)cur < 58) ){ // If ascii value is 0-9, A-Za-z
+                    int add = cur - '0';
+                    if(add < numStates){
+                         qAcc.add(add); //add int to qAcc    
+                    }
+            }
+        }
+        return qAcc;
     }
 }

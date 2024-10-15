@@ -1,14 +1,16 @@
 package org.example;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Reader {
     int numStates;
-    char[] sigma;
-    Transition[] transitions;
+    Set<Character> sigma;
+    Set<Transition> transitions;
     int start;
-    int[] accept; 
+    Set<Integer> accept; 
 
     //Constructor
-    Reader(int s, char[] sig, Transition[] t, int st, int[] acc){
+    Reader(int s, Set<Character> sig, Set<Transition> t, int st, Set<Integer> acc){
         numStates = s;
         sigma = sig;
         transitions = t;
@@ -16,5 +18,5 @@ public class Reader {
         accept = acc;
     }
 
-    
+
 }
