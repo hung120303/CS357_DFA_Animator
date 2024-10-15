@@ -29,6 +29,10 @@ public class App {
 
         Set<Character> sig = getAlphabet(sigma);
         Set<Transition> t = getTransitions(delta, states, sig);
+        Set<Integer> acc = getAccStates(accState, states);
+
+        Reader reader = new Reader(states, sig, t, startState, acc);
+        System.out.println(reader);
 
     }
 

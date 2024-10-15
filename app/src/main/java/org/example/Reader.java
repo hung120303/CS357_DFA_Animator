@@ -18,5 +18,44 @@ public class Reader {
         accept = acc;
     }
 
+    public Set<Integer> getAccept() {
+        return accept;
+    }
+
+    public int getNumStates() {
+        return numStates;
+    }
+
+    public Set<Character> getSigma() {
+        return sigma;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public Set<Transition> getTransitions() {
+        return transitions;
+    }
+
+    public String printStates(){
+        String s = "{";
+        for(int i = 0; i < numStates; i++){
+            if(i != numStates - 1)
+                s += "q" + i + ", ";
+            else
+                s += "q" + i + "}";
+        }
+        return s;
+    }
+
+    public String printStartState(){
+        return "q" + start;
+    }
+
+
+    public String toString() {
+        return "Formal Description:\nQ: " + printStates()  + "\nSigma: " + getSigma().toString() + "\nDelta: " + getTransitions().toString() + "\nStart: " + printStartState() + "\nAccept: " + getAccept().toString();
+    }
 
 }

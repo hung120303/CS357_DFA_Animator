@@ -20,4 +20,8 @@ public class Transition {
         return to; 
     }
 
+    public String toString(){
+        return "(" + input + ", " + from + ", " + to +")";
+    }
+
 }
