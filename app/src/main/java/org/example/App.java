@@ -23,6 +23,8 @@ public class App {
 
         lol.setVisible(true);
         lol.setSize(1000,1000);
+		lol.setLocationRelativeTo(null);  
+
 
 		int states; 
 		String sigma;
@@ -30,11 +32,17 @@ public class App {
 		int startState;
 		String accState;
         //Get some user input. Number of states, Alphabet, Transitions, starting state, accepting states
-        int states = Integer.valueOf(JOptionPane.showInputDialog("Enter number of states (Min: 1; Max: 10): "));
-        String sigma = JOptionPane.showInputDialog("Enter your alphabet (Use numbers (0-9), uppercase/lowercase letters (A-Z, a-z))(Ex: a, b, 1, ..., 0): ");
-        String delta = JOptionPane.showInputDialog("Enter transitions (Ex: {(a, 1, 2), ... , (b, 2, 3)} ): ");
-        int startState = Integer.valueOf(JOptionPane.showInputDialog("Enter the start state (0-" + (states - 1) + "): "));
-        String accState = JOptionPane.showInputDialog("Enter the accepting state(s) (Ex: 0, ... , " + (states - 1) +"): ");
+		
+		//if(JOptionPane.showInputDialog("Enter number of states (Min: 1; Max: 10): ") )
+		
+		
+        states = e.promptStates();
+
+        sigma = JOptionPane.showInputDialog("Enter your alphabet (Use numbers (0-9), uppercase/lowercase letters (A-Z, a-z))(Ex: a, b, 1, ..., 0): ");
+        delta = JOptionPane.showInputDialog("Enter transitions (Ex: {(a, 1, 2), ... , (b, 2, 3)} ): ");
+		
+        startState = Integer.valueOf(JOptionPane.showInputDialog("Enter the start state (0-" + (states - 1) + "): "));
+        accState = JOptionPane.showInputDialog("Enter the accepting state(s) (Ex: 0, ... , " + (states - 1) +"): ");
 
 
         Set<Character> sig = getAlphabet(sigma);
