@@ -13,12 +13,22 @@ public class App {
     }
 
     public static void main(String[] args) {
+		
+		// Error class to check for valid input
+		Error e = new Error();
 
         //Make the window
         JFrame lol = new JFrame("top text");
+		lol.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         lol.setVisible(true);
         lol.setSize(1000,1000);
 
+		int states; 
+		String sigma;
+		String delta;
+		int startState;
+		String accState;
         //Get some user input. Number of states, Alphabet, Transitions, starting state, accepting states
         int states = Integer.valueOf(JOptionPane.showInputDialog("Enter number of states (Min: 1; Max: 10): "));
         String sigma = JOptionPane.showInputDialog("Enter your alphabet (Use numbers (0-9), uppercase/lowercase letters (A-Z, a-z))(Ex: a, b, 1, ..., 0): ");
@@ -32,6 +42,8 @@ public class App {
         Set<Integer> acc = getAccStates(accState, states);
 
         Reader reader = new Reader(states, sig, t, startState, acc);
+		
+		
         System.out.println(reader);
 
     }
