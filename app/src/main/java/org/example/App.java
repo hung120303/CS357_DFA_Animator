@@ -13,81 +13,76 @@ public class App {
     }
 
     public static void main(String[] args) {
-		
-		// Error class to check for valid input
-		Error e = new Error();
+        // Error class to check for valid input
+        Error e = new Error();
 
-        //Make the window
-        JFrame lol = new JFrame("top text");
-		lol.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // Get user input for DFA configuration
+        int states = e.promptStates();
+        String sigma = JOptionPane.showInputDialog("Enter your alphabet (Use numbers (0-9), uppercase/lowercase letters (A-Z, a-z))(Ex: a,b,1,0): ");
+        String delta = JOptionPane.showInputDialog("Enter transitions (Ex: {(a,0,1),(b,0,2),(a,1,1)}): ");
+        int startState = Integer.parseInt(JOptionPane.showInputDialog("Enter the start state (0-" + (states - 1) + "): "));
+        String accState = JOptionPane.showInputDialog("Enter the accepting state(s) (Ex: 0,1): ");
 
-        lol.setVisible(true);
-        lol.setSize(1000,1000);
-		lol.setLocationRelativeTo(null);  
+        Set<Character> sig = App.getAlphabet(sigma);
+        Set<Transition> t = App.getTransitions(delta, states, sig);
+        Set<Integer> acc = App.getAccStates(accState, states);
 
+        // Validate the DFA configuration
+        if (t == null) {
+            JOptionPane.showMessageDialog(null, "Invalid transition table.");
+            return;
+        }
 
-		int states; 
-		String sigma;
-		String delta;
-		int startState;
-		String accState;
-        //Get some user input. Number of states, Alphabet, Transitions, starting state, accepting states
-		
-		//if(JOptionPane.showInputDialog("Enter number of states (Min: 1; Max: 10): ") )
-		
-		
-        states = e.promptStates();
-
-        sigma = JOptionPane.showInputDialog("Enter your alphabet (Use numbers (0-9), uppercase/lowercase letters (A-Z, a-z))(Ex: a, b, 1, ..., 0): ");
-        delta = JOptionPane.showInputDialog("Enter transitions (Ex: {(a, 1, 2), ... , (b, 2, 3)} ): ");
-		
-        startState = Integer.valueOf(JOptionPane.showInputDialog("Enter the start state (0-" + (states - 1) + "): "));
-        accState = JOptionPane.showInputDialog("Enter the accepting state(s) (Ex: 0, ... , " + (states - 1) +"): ");
-
-
-        Set<Character> sig = getAlphabet(sigma);
-        Set<Transition> t = getTransitions(delta, states, sig);
-        Set<Integer> acc = getAccStates(accState, states);
-
+        // Create a Reader instance based on user input
         Reader reader = new Reader(states, sig, t, startState, acc);
-		
-		
-        System.out.println(reader);
 
+        // Create and configure the JFrame to visualize the DFA
+        JFrame frame = new JFrame("DFA Visualizer");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setSize(1000, 500); // Adjusted height for horizontal layout
+        frame.setLocationRelativeTo(null);
+
+        // Add DFADrawer to the frame and make it visible
+        DFADrawer drawer = new DFADrawer(reader);
+        frame.add(drawer);
+        frame.setVisible(true);
     }
 
+
+
+
     public static Set<Character> getAlphabet(String s){
-        Set<Character> sigma = new HashSet<Character>(); 
+        Set<Character> sigma = new HashSet<Character>();
         for(int i = 0; i < s.length(); i++){ //enumerate through each char element of the intput string
             char cur = s.charAt(i);
             if( ((int)cur > 47 && (int)cur < 58) || ((int)cur > 64 && (int)cur < 91) || ((int)cur > 96 && (int)cur < 123)){ // If ascii value is 0-9, A-Za-z
-                    sigma.add(cur); //add char to sigma                
+                    sigma.add(cur); //add char to sigma
             }
         }
         return sigma;
     }
     public static Set<Integer> getAccStates(String s, int numStates){
-        Set<Integer> qAcc = new HashSet<Integer>(); 
+        Set<Integer> qAcc = new HashSet<Integer>();
         for(int i = 0; i < s.length(); i++){ //enumerate through each char element of the intput string
             char cur = s.charAt(i);
             if( ((int)cur > 47 && (int)cur < 58) ){ // If ascii value is 0-9, A-Za-z
                     int add = cur - '0';
                     if(add < numStates){
-                         qAcc.add(add); //add int to qAcc    
+                         qAcc.add(add); //add int to qAcc
                     }
             }
         }
         return qAcc;
     }
     public static Set<Transition> getTransitions(String s, int numStates, Set<Character> sigma){
-        Set<Transition> delta = new HashSet<Transition>(); 
+        Set<Transition> delta = new HashSet<Transition>();
             if(s.charAt(0) != 123){ //input should start with '{'
                 return null; //This should be an error message for invalid format
             }
             int i = 1;
-            while(i < s.length()){ //until reach end of string 
+            while(i < s.length()){ //until reach end of string
                 if((int)(s.charAt(i)) == 40){ // check for '('
-                    char input = '~'; 
+                    char input = '~';
                     int from = -1;
                     int to = -1;
                     i++;
@@ -100,12 +95,12 @@ public class App {
                         else if(from == -1){
                             if( ((int)(s.charAt(i)) > 47 && (int)(s.charAt(i)) < 58) ){
                                 from = s.charAt(i) - '0';
-                            }                            
+                            }
                         }
                         else if(to == -1){
                             if( ((int)(s.charAt(i)) > 47 && (int)(s.charAt(i)) < 58) ){
                                 to = s.charAt(i) - '0';
-                            }                            
+                            }
                         }
                         i++;
                     }
@@ -123,7 +118,7 @@ public class App {
         }
         else{
             System.out.println("This transiton table is smelly");
-            return null; 
+            return null;
         }
     }
 
@@ -137,7 +132,7 @@ public class App {
                 int curFrom = t.getFrom();
 
                 if(curChar == c){
-                    check[curFrom] += 1; 
+                    check[curFrom] += 1;
                 }
 
             }
@@ -147,7 +142,7 @@ public class App {
                 }
             }
         }
-        
+
         // there should be (# of states) * (# of characters in alphabet) transitions
         if(tTable.size() != (numStates * sigma.size())){
             return false;
