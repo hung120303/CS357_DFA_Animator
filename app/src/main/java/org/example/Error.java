@@ -1,5 +1,8 @@
 package org.example;
 
+import javax.swing.*;
+import java.util.Set;
+import java.util.HashSet;
 import javax.swing.JOptionPane;
 
 
@@ -61,13 +64,23 @@ public class Error {
 				boolean pass = true;
 				while(i < s.length()){ //enumerate through each char element of the intput string
 					char cur = s.charAt(i);
-					if( ((int)cur > 47 && (int)cur < 58) || ((int)cur > 64 && (int)cur < 91) || ((int)cur > 96 && (int)cur < 123) || (int)cur == 44 || (int)cur == 3 || (int)cur == 32){ // If ascii value is 0-9, A-Za-z, ,
+					if( ((int)cur > 47 && (int)cur < 58) || ((int)cur > 64 && (int)cur < 91) || ((int)cur > 96 && (int)cur < 123)){ // If ascii value is 0-9, A-Za-z, ,
+						i++;
+						if(i < s.length()){
+							//check char after
+							cur = s.charAt(i);
+							if((int)cur == 44){ // ,
+								i++;
+							}
+							else{
+								System.out.print("bruh");
+								pass = false;
+							}
+						}
+					}
+					else if( (int)cur == 32){ // space
 						i++;
 					}
-					else{
-						pass = false;
-					}
-
 				}
 				if(!pass){
 					JOptionPane.showMessageDialog(null, "Invalid input (Use numbers (0-9), uppercase/lowercase letters (A-Z, a-z))(Ex: a,b,1,0). Try again.");
