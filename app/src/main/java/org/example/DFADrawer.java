@@ -16,7 +16,11 @@ public class DFADrawer extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        // Enable anti-aliasing for smoother lines and text
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // Set stroke for thicker lines (optional)
+        g2d.setStroke(new BasicStroke(2));
 
         int numStates = reader.getNumStates();
         Set<Integer> acceptingStates = reader.getAccept();
@@ -108,8 +112,8 @@ public class DFADrawer extends JPanel {
                     adjustedToY = (int) (toY - radius * Math.sin(angle));
                 }
 
-                // Draw line from fromState to toState
-                g2d.drawLine(adjustedFromX, adjustedFromY, adjustedToX, adjustedToY);
+                // Draw line from fromState to toState with arrowhead
+                drawArrowLine(g2d, adjustedFromX, adjustedFromY, adjustedToX, adjustedToY, 10, 7);
 
                 // Draw the transition labels
                 StringBuilder inputStrBuilder = new StringBuilder();
@@ -153,9 +157,42 @@ public class DFADrawer extends JPanel {
         // Indicate the start state
         int startX = stateXs[startState];
         int startY = stateYs[startState];
-        // Draw a small line pointing to the start state
-        g2d.drawLine(startX - radius - 20, startY, startX - radius, startY);
+        // Draw a small arrow pointing to the start state
+        drawArrowLine(g2d, startX - radius - 30, startY, startX - radius, startY, 10, 7);
         // Optionally, draw a label "Start"
-        g2d.drawString("Start", startX - radius - 40, startY + 5);
+        g2d.drawString("Start", startX - radius - 50, startY + 5);
+    }
+
+    /**
+     * Draws a directed line (arrow) between two points.
+     *
+     * @param g2d   Graphics2D object to draw with.
+     * @param x1    X-coordinate of the starting point.
+     * @param y1    Y-coordinate of the starting point.
+     * @param x2    X-coordinate of the ending point.
+     * @param y2    Y-coordinate of the ending point.
+     * @param arrowHeadLength Length of the arrowhead.
+     * @param arrowHeadWidth  Width of the arrowhead.
+     */
+    private void drawArrowLine(Graphics2D g2d, int x1, int y1, int x2, int y2, int arrowHeadLength, int arrowHeadWidth) {
+        // Draw the main line
+        g2d.drawLine(x1, y1, x2, y2);
+
+        // Calculate the angle of the line
+        double angle = Math.atan2(y2 - y1, x2 - x1);
+
+        // Calculate the coordinates for the arrowhead
+        int arrowX1 = x2 - (int) (arrowHeadLength * Math.cos(angle - Math.PI / 6));
+        int arrowY1 = y2 - (int) (arrowHeadLength * Math.sin(angle - Math.PI / 6));
+        int arrowX2 = x2 - (int) (arrowHeadLength * Math.cos(angle + Math.PI / 6));
+        int arrowY2 = y2 - (int) (arrowHeadLength * Math.sin(angle + Math.PI / 6));
+
+        // Draw the arrowhead
+        Polygon arrowHead = new Polygon();
+        arrowHead.addPoint(x2, y2);
+        arrowHead.addPoint(arrowX1, arrowY1);
+        arrowHead.addPoint(arrowX2, arrowY2);
+
+        g2d.fillPolygon(arrowHead);
     }
 }
