@@ -20,7 +20,7 @@ public class DFADrawer extends JPanel {
 
         // Enable anti-aliasing for smoother lines and text
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        // Set stroke for thicker lines (optional)
+        // Set stroke for thicker lines
         g2d.setStroke(new BasicStroke(2));
 
         int numStates = reader.getNumStates();
@@ -69,7 +69,7 @@ public class DFADrawer extends JPanel {
             }
         }
 
-        // **New code to keep track of label positions to prevent overlaps**
+        // New code to keep track of label positions to prevent overlaps
         List<Rectangle> labelBounds = new ArrayList<>();
 
         // Draw transitions (lines/arcs) between states
@@ -138,7 +138,7 @@ public class DFADrawer extends JPanel {
                     // For non-adjacent states, draw an arc with an arrow
                     drawArrowArc(g2d, adjustedFromX, adjustedFromY, adjustedToX, adjustedToY, 10, 7, isBidirectional);
 
-                    // **Calculate the midpoint of the arc for label positioning**
+                    // Calculate the midpoint of the arc for label positioning
                     Point2D.Float midpoint = getQuadCurveMidpoint(adjustedFromX, adjustedFromY, adjustedToX, adjustedToY, isBidirectional);
 
                     // Draw the transition labels
@@ -179,17 +179,7 @@ public class DFADrawer extends JPanel {
         g2d.drawString("Start", startX - radius - 50, startY + 5);
     }
 
-    /**
-     * Draws a directed line (arrow) between two points.
-     *
-     * @param g2d            Graphics2D object to draw with.
-     * @param x1             X-coordinate of the starting point.
-     * @param y1             Y-coordinate of the starting point.
-     * @param x2             X-coordinate of the ending point.
-     * @param y2             Y-coordinate of the ending point.
-     * @param arrowHeadLength Length of the arrowhead.
-     * @param arrowHeadWidth  Width of the arrowhead.
-     */
+
     private void drawArrowLine(Graphics2D g2d, int x1, int y1, int x2, int y2, int arrowHeadLength, int arrowHeadWidth) {
         // Draw the main line
         g2d.drawLine(x1, y1, x2, y2);
@@ -212,18 +202,7 @@ public class DFADrawer extends JPanel {
         g2d.fillPolygon(arrowHead);
     }
 
-    /**
-     * Draws an arc between two points with an arrowhead.
-     *
-     * @param g2d            Graphics2D object to draw with.
-     * @param x1             X-coordinate of the starting point.
-     * @param y1             Y-coordinate of the starting point.
-     * @param x2             X-coordinate of the ending point.
-     * @param y2             Y-coordinate of the ending point.
-     * @param arrowHeadLength Length of the arrowhead.
-     * @param arrowHeadWidth  Width of the arrowhead.
-     * @param isBidirectional Indicates if the arc is part of a bidirectional transition.
-     */
+
     private void drawArrowArc(Graphics2D g2d, int x1, int y1, int x2, int y2, int arrowHeadLength, int arrowHeadWidth, boolean isBidirectional) {
         // Calculate control points for the quadratic curve
         int ctrlX = (x1 + x2) / 2;
@@ -260,16 +239,7 @@ public class DFADrawer extends JPanel {
         g2d.fillPolygon(arrowHead);
     }
 
-    /**
-     * Calculates the midpoint of a quadratic curve (arc).
-     *
-     * @param x1             X-coordinate of the starting point.
-     * @param y1             Y-coordinate of the starting point.
-     * @param x2             X-coordinate of the ending point.
-     * @param y2             Y-coordinate of the ending point.
-     * @param isBidirectional Indicates if the arc is part of a bidirectional transition.
-     * @return Point2D.Float representing the midpoint of the arc.
-     */
+
     private Point2D.Float getQuadCurveMidpoint(int x1, int y1, int x2, int y2, boolean isBidirectional) {
         // Control point for the quadratic curve
         float ctrlX = (x1 + x2) / 2f;
@@ -289,33 +259,14 @@ public class DFADrawer extends JPanel {
         return new Point2D.Float(midX, midY);
     }
 
-    /**
-     * Calculates the derivative of a quadratic Bezier curve at a given t.
-     *
-     * @param x0 Start x-coordinate.
-     * @param x1 Control x-coordinate.
-     * @param x2 End x-coordinate.
-     * @param y0 Start y-coordinate.
-     * @param y1 Control y-coordinate.
-     * @param y2 End y-coordinate.
-     * @param t  Parameter t (0 <= t <= 1).
-     * @return Array containing dx/dt and dy/dt.
-     */
+
     private double[] quadraticDerivative(double x0, double x1, double x2, double y0, double y1, double y2, double t) {
         double dxdt = 2 * (1 - t) * (x1 - x0) + 2 * t * (x2 - x1);
         double dydt = 2 * (1 - t) * (y1 - y0) + 2 * t * (y2 - y1);
         return new double[]{dxdt, dydt};
     }
 
-    /**
-     * Adjusts the label position to prevent overlap with existing labels.
-     *
-     * @param labelPos   Initial position of the label.
-     * @param text       The text of the label.
-     * @param g2d        Graphics2D object to measure text dimensions.
-     * @param labelBounds List of existing label bounds.
-     * @return Adjusted position for the label.
-     */
+
     private Point adjustLabelPosition(Point labelPos, String text, Graphics2D g2d, List<Rectangle> labelBounds) {
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(text);
@@ -356,12 +307,7 @@ public class DFADrawer extends JPanel {
         return new Point(newLabelRect.x, newLabelRect.y + textHeight);
     }
 
-    /**
-     * Formats the list of inputs into a string without square brackets and spaces.
-     *
-     * @param inputs List of input characters.
-     * @return Formatted string of inputs.
-     */
+
     private String formatInputs(List<Character> inputs) {
         StringBuilder inputStrBuilder = new StringBuilder();
         for (char input : inputs) {
