@@ -58,7 +58,7 @@ public class App {
         int states = e.promptStates();
         String sigma = e.promptSigma();
         String delta = JOptionPane.showInputDialog("Enter transitions (Ex: {(a,0,1),(b,0,2),(a,1,1)}): ");
-        int startState = Integer.parseInt(JOptionPane.showInputDialog("Enter the start state (0-" + (states - 1) + "): "));
+        int startState = e.promptStartState();
         String accState = e.promptAcceptingStates();
 
         Set<Character> sig = App.getAlphabet(sigma);
