@@ -41,7 +41,7 @@ The tool categorizes transitions based on their characteristics and draws them a
 ---
 
 ## Example Visualization
-
+![image](https://github.com/user-attachments/assets/72bcd190-fa93-4d32-86d3-b88974e65034)
 
 
 ---
@@ -69,10 +69,10 @@ The tool categorizes transitions based on their characteristics and draws them a
 
 ### Example Input
 ```text
-2
+3
 a, b
-{(a, 0, 1), (b, 0, 1), (a, 1, 0), (b, 1, 0)}
+{(a,0,1),(b,0,2),(a,1,1),(b,1,2),(a,2,0),(b,2,2)}
 0
-1
+2
 
 
