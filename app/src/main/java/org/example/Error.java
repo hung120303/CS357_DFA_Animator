@@ -187,7 +187,7 @@ public class Error {
 								}
 							}
 						}
-						else if( cur == '}' && i == s.length() - 1){
+						else if( cur == '}'){
 							i++;
 							valid = true;
 						}
