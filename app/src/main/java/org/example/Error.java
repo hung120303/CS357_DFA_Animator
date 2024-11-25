@@ -115,18 +115,110 @@ public class Error {
 					JOptionPane.showMessageDialog(null, "Invalid input (Enter transitions (Ex: {(a,0,1),(b,0,2),(a,1,1)} ). Try again."); // This should be an error message for invalid format
         		}
 				else{
+					boolean pass = true;
 					int i = 1;
 					char cur;
-					cur = s.charAt(i);
 					while (i < s.length()) { // Until reach end of string
-						
-						if( (int)cur == 40){
+						cur = s.charAt(i);
+						//input (0,0,0)
+						if( (int)cur == 40){ // '('
 							i++;
+							if(i < s.length()){
+								cur = s.charAt(i);
+								if (((int)cur > 47 && (int)cur < 58) || ((int)cur > 64 && (int)cur < 91) || ((int)cur > 96 && (int)cur < 123)){ // input 0-9, A-Za-z
+									i++;
+									if(i < s.length()){
+										cur = s.charAt(i);
+										if((int)cur == 44){ // ,
+											i++;
+											if(i < s.length()){
+												cur = s.charAt(i);
+												if((int)cur > 47 && (int)cur < 58){ // input 0-9
+													i++;
+													if(i < s.length()){
+														cur = s.charAt(i);
+														if((int)cur == 44){ // ,
+															i++;
+															if(i < s.length()){
+																cur = s.charAt(i);
+																if((int)cur > 47 && (int)cur < 58){ // input 0-9
+																	i++;
+																	if(i < s.length()){
+																		cur = s.charAt(i);
+																		if((int)cur == 41){ // ')''
+																			i++;
+																		}
+																	}
+																	else{
+																		pass = false;
+																	}
+																}
+																else{
+																	pass = false;
+																}
+															}
+															else{
+																pass = false;
+															}
+														}
+													}
+													else{
+														pass = false;
+													}
+												}
+												else{
+													pass = false;
+												}
+											}
+											else{
+												pass = false;
+											}
+										}
+										else{
+											pass = false;
+										}
+									}
+									else{
+										pass = false;
+									}
+								}
+								else{
+									pass = false;
+								}
+							}
 						}
+						else if( cur == '}' && i == s.length() - 1){
+							i++;
+							valid = true;
+						}
+						else {
+							pass = false;
+						}
+						// , and spaces
+						if(i < s.length()){
+							cur = s.charAt(i);
+							if( (int)cur == 44){
+								i++;
+							}
+							if(i < s.length()){
+								cur = s.charAt(i);
+								if( (int)cur == 32){
+									i++;
+								}
+							}
+						}
+						else{
+							pass = false;
+						}
+					}
+					if(pass){
+						valid = true;
+					}
+					if(!valid){
+						JOptionPane.showMessageDialog(null, "Invalid input (Enter transitions (Ex: {(a,0,1),(b,0,2),(a,1,1)} ). Try again.");
 					}
 				}
 			}
-
 			catch(Exception e) {
 				JOptionPane.showMessageDialog(null, "Invalid input (Enter transitions (Ex: {(a,0,1),(b,0,2),(a,1,1)} ). Try again.");
 			}
@@ -198,6 +290,41 @@ public class Error {
             }
         }
         return s;
+    }
+
+	public int promptStartState(){
+        boolean valid = false;
+        int val = -1;
+
+        //Until we have a valid input
+        while(!valid) {
+            try  {
+                //Store input into String
+                String s = JOptionPane.showInputDialog("Enter the start state (0-10");
+
+                //If s is null, user pressed cancel or closed the window. exit the program
+                if(s == null){
+                    JOptionPane.showMessageDialog(null, "Exiting program.");
+                    System.exit(0);
+                }
+
+                // Convert input to int 
+                val = Integer.parseInt(s);
+
+                // value is between 1 and 10, return
+                if(val > 0 && val < 11){
+                    valid = true;
+                }
+                // value is not 1-10, error msg
+                else{
+                    JOptionPane.showMessageDialog(null, "Invalid Number. Input must be 1-10. Try again.");
+                }
+            }
+            catch(NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid input. Input must be 1-10. Try again.");
+            }
+        }
+        return val;
     }
 
 	
