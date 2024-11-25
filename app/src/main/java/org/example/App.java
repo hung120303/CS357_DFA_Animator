@@ -10,6 +10,7 @@ public class App {
     private static DFADrawer drawer; // Make drawer a class-level variable
     private static JPanel mainPanel; // Main panel to hold components
 
+
     public static void main(String[] args) {
         // Create and configure the JFrame to visualize the DFA
         JFrame frame = new JFrame("DFA Visualizer");

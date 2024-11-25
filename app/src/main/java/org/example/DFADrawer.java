@@ -69,7 +69,7 @@ public class DFADrawer extends JPanel {
             }
         }
 
-        // New code to keep track of label positions to prevent overlaps
+        // Keep track of label positions to prevent overlaps
         List<Rectangle> labelBounds = new ArrayList<>();
 
         // Draw transitions (lines/arcs) between states
@@ -313,7 +313,7 @@ public class DFADrawer extends JPanel {
         for (char input : inputs) {
             inputStrBuilder.append(input).append(",");
         }
-        String inputStr = inputStrBuilder.substring(0, inputStrBuilder.length() - 1); // Remove trailing comma
+        String inputStr = inputStrBuilder.substring(0, inputStrBuilder.length() - 1);
         return inputStr;
     }
 }
