@@ -57,7 +57,7 @@ public class App {
         // Get user input for DFA configuration
         int states = e.promptStates();
         String sigma = e.promptSigma();
-        String delta = JOptionPane.showInputDialog("Enter transitions (Ex: {(a,0,1),(b,0,2),(a,1,1)}): ");
+        String delta = e.promptDelta();
         int startState = e.promptStartState();
         String accState = e.promptAcceptingStates();
 

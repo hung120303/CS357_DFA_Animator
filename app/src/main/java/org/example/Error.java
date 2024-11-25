@@ -118,9 +118,9 @@ public class Error {
 					boolean pass = true;
 					int i = 1;
 					char cur;
-					cur = s.charAt(i);
 					while (i < s.length()) { // Until reach end of string
-						
+						cur = s.charAt(i);
+						//input (0,0,0)
 						if( (int)cur == 40){ // '('
 							i++;
 							if(i < s.length()){
@@ -131,10 +131,55 @@ public class Error {
 										cur = s.charAt(i);
 										if((int)cur == 44){ // ,
 											i++;
+											if(i < s.length()){
+												cur = s.charAt(i);
+												if((int)cur > 47 && (int)cur < 58){ // input 0-9
+													i++;
+													if(i < s.length()){
+														cur = s.charAt(i);
+														if((int)cur == 44){ // ,
+															i++;
+															if(i < s.length()){
+																cur = s.charAt(i);
+																if((int)cur > 47 && (int)cur < 58){ // input 0-9
+																	i++;
+																	if(i < s.length()){
+																		cur = s.charAt(i);
+																		if((int)cur == 41){ // ')''
+																			i++;
+																		}
+																	}
+																	else{
+																		pass = false;
+																	}
+																}
+																else{
+																	pass = false;
+																}
+															}
+															else{
+																pass = false;
+															}
+														}
+													}
+													else{
+														pass = false;
+													}
+												}
+												else{
+													pass = false;
+												}
+											}
+											else{
+												pass = false;
+											}
 										}
 										else{
 											pass = false;
 										}
+									}
+									else{
+										pass = false;
 									}
 								}
 								else{
@@ -142,13 +187,38 @@ public class Error {
 								}
 							}
 						}
+						else if( cur == '}' && i == s.length() - 1){
+							i++;
+							valid = true;
+						}
+						else {
+							pass = false;
+						}
+						// , and spaces
+						if(i < s.length()){
+							cur = s.charAt(i);
+							if( (int)cur == 44){
+								i++;
+							}
+							if(i < s.length()){
+								cur = s.charAt(i);
+								if( (int)cur == 32){
+									i++;
+								}
+							}
+						}
 						else{
 							pass = false;
 						}
 					}
+					if(pass){
+						valid = true;
+					}
+					if(!valid){
+						JOptionPane.showMessageDialog(null, "Invalid input (Enter transitions (Ex: {(a,0,1),(b,0,2),(a,1,1)} ). Try again.");
+					}
 				}
 			}
-
 			catch(Exception e) {
 				JOptionPane.showMessageDialog(null, "Invalid input (Enter transitions (Ex: {(a,0,1),(b,0,2),(a,1,1)} ). Try again.");
 			}
