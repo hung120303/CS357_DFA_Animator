@@ -311,8 +311,8 @@ public class Error {
                 // Convert input to int 
                 val = Integer.parseInt(s);
 
-                // value is between 1 and 10, return
-                if(val > 0 && val < 11){
+                // value is between 0 and 10, return
+                if(val >= 0 && val < 11){
                     valid = true;
                 }
                 // value is not 1-10, error msg
